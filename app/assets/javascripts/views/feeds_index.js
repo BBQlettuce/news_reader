@@ -1,12 +1,17 @@
 NewsReader.Views.FeedsIndex = Backbone.View.extend({
-  template: JST['feeds_index'],
+  tagname: 'ul',
+
+  template: JST['feeds_index_item'],
 
   initialize: function(options) {
     this.listenTo(this.collection, "sync", this.render)
   },
 
   render: function() {
-    this.$el.html(this.template({feeds: this.collection}));
+    this.collection.forEach(function(feed) {
+      this.$el.append(this.template({feed: feed}))
+    }.bind(this))
+
     return this;
   }
 
