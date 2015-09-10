@@ -10,13 +10,21 @@ NewsReader.Views.FeedShow = Backbone.CompositeView.extend({
     'click button.refresh': 'refreshPage'
   },
 
-  updateSubviews: function() {
+  removeSubviews: function() {
+    this.subviews("ul.entry-list").each(function(subview){
+      subview.remove();
+    })
+    //
     // this.eachSubview(function (subview) {
     //   this.removeSubview("ul.entry-list", subview);
     // }.bind(this));
-    // this.subviews("ul.entry-list") = _([]);
-    debugger
+    // // this.subviews("ul.entry-list") = _([]);
+    // // debugger
     this.subviews("ul.entry-list").splice(0, this.subviews("ul.entry-list").length);
+
+  },
+
+  updateSubviews: function() {
 
     this.collection.each(function(entry) {
       var subView = new NewsReader.Views.EntryShow({model: entry});
@@ -25,10 +33,9 @@ NewsReader.Views.FeedShow = Backbone.CompositeView.extend({
   },
 
   render: function() {
-    this.updateSubviews();
     var content = this.template({feed: this.model});
     this.$el.html(content);
-    this.attachSubviews();
+    this.updateSubviews();
 
     return this;
   },
